@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <stdbool.h>
 
 #define SCREEN_W 224
 #define SCREEN_H 288
@@ -11,6 +12,8 @@ int main ()
     SDL_Renderer * renderer;
     SDL_Surface * temp;
     SDL_Texture * sprite_sheet;
+    SDL_Event event;
+    bool quit;
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
         puts("SDL_Init failed!");
@@ -42,16 +45,23 @@ int main ()
         return 1;
     }
 
-    SDL_PumpEvents();
+    quit = false;
+    while (!quit)
+    {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                quit = true;
+        }
+        
+        // draw
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, sprite_sheet, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        SDL_Delay(10);
+    }
 
-    // draw
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, sprite_sheet, NULL, NULL);
-    SDL_RenderPresent(renderer);
-
-    SDL_Delay(5000);
-
+    // clean up
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
