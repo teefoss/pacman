@@ -7,7 +7,7 @@ LINK=-lSDL2
 SRCS=pacman.c
 
 all:
-	$(CC) $(SRCS) -o $(EXEC) $(LIBS) $(INCLUDE) $(LINK)
+	$(CC) -g $(SRCS) -o $(EXEC) $(LIBS) $(INCLUDE) $(LINK)
 
 clean:
 	rm -f *.obj $(EXEC)
